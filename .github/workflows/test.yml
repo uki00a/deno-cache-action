@@ -11,8 +11,10 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-      # - name: Set up Deno
-      #   uses: denoland/setup-deno@main
+      - name: Set up Deno
+        uses: denoland/setup-deno@main
+        with:
+          deno-version: 1.25.2
       - uses: ./
       # - name: Run tests
       #   run: |

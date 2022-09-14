@@ -13,7 +13,8 @@
   "dependencies": {
     "@actions/cache": "^3.0.4",
     "@actions/core": "^1.9.1",
-    "@actions/exec": "^1.1.1"
+    "@actions/exec": "^1.1.1",
+    "zod": "^3.19.1"
   },
   "devDependencies": {
     "@vercel/ncc": "^0.34.0"
