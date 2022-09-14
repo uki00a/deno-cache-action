@@ -7,9 +7,15 @@
   "license": "MIT",
   "packageManager": "yarn@1.22.19",
   "private": true,
+  "scripts": {
+    "build": "ncc build src/index.mjs"
+  },
   "dependencies": {
     "@actions/cache": "^3.0.4",
     "@actions/core": "^1.9.1",
     "@actions/exec": "^1.1.1"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.34.0"
   }
 }

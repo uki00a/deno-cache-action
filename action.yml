@@ -3,4 +3,4 @@ description: 'This action provides support for caching and restoring deno depend
 author: 'uki00a'
 runs:
   using: 'node16'
-  main: 'index.mjs'
+  main: 'dist/index.mjs'
