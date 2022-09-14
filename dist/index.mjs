@@ -64819,7 +64819,7 @@ async function main() {
   }
 
   for (const entrypoint of entrypoints) {
-    await (0,exec.exec)(denoExecutable, ['cache', entrypoint], { failOnStdErr: true })
+    await (0,exec.exec)(denoExecutable, ['cache', '--quiet', entrypoint], { failOnStdErr: true })
   }
 
   for (const [path, key] of toCache) {

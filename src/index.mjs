@@ -29,7 +29,7 @@ async function main() {
   }
 
   for (const entrypoint of entrypoints) {
-    await exec(denoExecutable, ['cache', entrypoint], { failOnStdErr: true })
+    await exec(denoExecutable, ['cache', '--quiet', entrypoint], { failOnStdErr: true })
   }
 
   for (const [path, key] of toCache) {
