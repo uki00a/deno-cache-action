@@ -15,6 +15,16 @@ jobs:
         uses: denoland/setup-deno@main
         with:
           deno-version: 1.25.2
+      - name: Lint
+        run: |
+          deno fmt --check
+          deno lint
+      - name: Install npm packages
+        uses: bahmutov/npm-install@v1
+      - name: Check dist
+        run: |
+          yarn build
+          git diff --exit-code
       - uses: ./
         with:
           path: |

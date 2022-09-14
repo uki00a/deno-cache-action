@@ -64799,38 +64799,40 @@ const denoInfo = mod.object({
   modulesCache: mod.string(),
   typescriptCache: mod.string(),
   registryCache: mod.string(),
-  originStorage: mod.string()
-})
+  originStorage: mod.string(),
+});
 
 async function main() {
-  const denoExecutable = 'deno'
-  const { stdout } = await (0,exec.getExecOutput)(denoExecutable, ['info', '--json'], {
+  const denoExecutable = "deno";
+  const { stdout } = await (0,exec.getExecOutput)(denoExecutable, ["info", "--json"], {
     silent: true,
-    failOnStdErr: true
-  })
-  const info = denoInfo.parse(JSON.parse(stdout.trim()))
-  const entrypoints = (0,core.getMultilineInput)('path', { trimWhitespace: true })
-  const key = (0,core.getInput)('key', { trimWhitespace: true, required: true })
+    failOnStdErr: true,
+  });
+  const info = denoInfo.parse(JSON.parse(stdout.trim()));
+  const entrypoints = (0,core.getMultilineInput)("path", { trimWhitespace: true });
+  const key = (0,core.getInput)("key", { trimWhitespace: true, required: true });
   const toCache = [
-    [info.modulesCache, `${key}-modules-cache`]
-  ]
+    [info.modulesCache, `${key}-modules-cache`],
+  ];
   for (const [path, key] of toCache) {
-    await (0,cache.restoreCache)([path], key)
+    await (0,cache.restoreCache)([path], key);
   }
 
   for (const entrypoint of entrypoints) {
-    await (0,exec.exec)(denoExecutable, ['cache', '--quiet', entrypoint], { failOnStdErr: true })
+    await (0,exec.exec)(denoExecutable, ["cache", "--quiet", entrypoint], {
+      failOnStdErr: true,
+    });
   }
 
   for (const [path, key] of toCache) {
-    await (0,cache.saveCache)([path], key)
+    await (0,cache.saveCache)([path], key);
   }
 }
 
 main().catch((error) => {
-  console.error(error)
-  process.exit(1)
-})
+  console.error(error);
+  process.exit(1);
+});
 
 })();
 
