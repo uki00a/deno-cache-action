@@ -1,0 +1,35 @@
+name: test
+on:
+  push:
+    branches:
+      - "main"
+  pull_request:
+    branches:
+      - "**"
+jobs:
+  test:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Deno
+        uses: denoland/setup-deno@main
+        with:
+          deno-version: 1.25.2
+      - name: Lint
+        run: |
+          deno fmt --check
+          deno lint
+      - name: Install npm packages
+        uses: bahmutov/npm-install@v1
+      - name: Check dist
+        run: |
+          yarn build
+          git diff --exit-code
+      - uses: ./
+        with:
+          path: |
+            test.ts
+          key: ${{ runner.os }}-${{ hashFiles('**/test.ts') }}
+      - name: Run tests
+        run: |
+          deno run --cached-only test.ts

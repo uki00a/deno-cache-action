@@ -1,0 +1,12 @@
+{
+  "fmt": {
+    "files": {
+      "include": ["test.ts", "src", "README.md"]
+    }
+  },
+  "lint": {
+    "files": {
+      "include": ["test.ts", "src"]
+    }
+  }
+}

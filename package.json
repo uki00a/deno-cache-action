@@ -1,0 +1,22 @@
+{
+  "name": "deno-cache-action",
+  "version": "0.0.1",
+  "main": "index.mjs",
+  "repository": "https://github.com/uki00a/deno-cache-action.git",
+  "author": "uki00a <uki00a@gmail.com>",
+  "license": "MIT",
+  "packageManager": "yarn@1.22.19",
+  "private": true,
+  "scripts": {
+    "build": "ncc build src/index.mjs"
+  },
+  "dependencies": {
+    "@actions/cache": "^3.0.4",
+    "@actions/core": "^1.9.1",
+    "@actions/exec": "^1.1.1",
+    "zod": "^3.19.1"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.34.0"
+  }
+}

@@ -1,0 +1,14 @@
+name: 'deno-cache-action'
+description: 'This action provides support for caching and restoring deno dependencies'
+author: 'uki00a'
+runs:
+  using: 'node16'
+  main: 'dist/index.mjs'
+inputs:
+  path:
+    description: 'entrypoint files'
+    default: |
+      mod.ts
+  key:
+    default: |
+      deno-cache-action
