@@ -19,6 +19,7 @@ jobs:
         with:
           path: |
             test.ts
+          key: ${{ runner.os }}-${{ hashFiles('**/test.ts') }}
       - name: Run tests
         run: |
-          deno run --no-remote test.ts
+          deno run --cached-only test.ts
