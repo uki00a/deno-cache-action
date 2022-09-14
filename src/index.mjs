@@ -1,6 +1,7 @@
 // @ts-check
-import { getMultilineInput } from '@actions/core'
-import { getExecOutput } from '@actions/exec'
+import { restoreCache, saveCache } from '@actions/cache'
+import { getInput, getMultilineInput } from '@actions/core'
+import { exec, getExecOutput } from '@actions/exec'
 import { z } from 'zod'
 
 const denoInfo = z.object({
@@ -19,7 +20,21 @@ async function main() {
   })
   const info = denoInfo.parse(JSON.parse(stdout.trim()))
   const entrypoints = getMultilineInput('path', { trimWhitespace: true })
-  console.info(entrypoints)
+  const key = getInput('key', { trimWhitespace: true, required: true })
+  const toCache = [
+    [info.modulesCache, `${key}-modules-cache`]
+  ]
+  for (const [path, key] of toCache) {
+    await restoreCache([path], key)
+  }
+
+  for (const entrypoint of entrypoints) {
+    await exec(denoExecutable, ['cache', entrypoint], { failOnStdErr: true })
+  }
+
+  for (const [path, key] of toCache) {
+    await saveCache([path], key)
+  }
 }
 
 main().catch((error) => {
