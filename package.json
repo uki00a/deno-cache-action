@@ -1,7 +1,7 @@
 {
   "name": "deno-cache-action",
   "version": "0.0.1",
-  "main": "index.js",
+  "main": "index.mjs",
   "repository": "https://github.com/uki00a/deno-cache-action.git",
   "author": "uki00a <uki00a@gmail.com>",
   "license": "MIT",
