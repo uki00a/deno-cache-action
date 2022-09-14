@@ -6,6 +6,9 @@ runs:
   main: 'dist/index.mjs'
 inputs:
   path:
-    description: 'Entrypoints'
+    description: 'entrypoint files'
     default: |
       mod.ts
+  key:
+    default: |
+      deno-cache-action
