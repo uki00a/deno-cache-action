@@ -1,4 +1,5 @@
 // @ts-check
+import { getMultilineInput } from '@actions/core'
 import { getExecOutput } from '@actions/exec'
 import { z } from 'zod'
 
@@ -17,7 +18,8 @@ async function main() {
     failOnStdErr: true
   })
   const info = denoInfo.parse(JSON.parse(stdout.trim()))
-  console.info(info)
+  const entrypoints = getMultilineInput('path', { trimWhitespace: true })
+  console.info(entrypoints)
 }
 
 main().catch((error) => {

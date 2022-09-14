@@ -4,3 +4,8 @@ author: 'uki00a'
 runs:
   using: 'node16'
   main: 'dist/index.mjs'
+inputs:
+  path:
+    description: 'Entrypoints'
+    default: |
+      mod.ts

@@ -16,6 +16,9 @@ jobs:
         with:
           deno-version: 1.25.2
       - uses: ./
+        with:
+          path: |
+            test.ts
       # - name: Run tests
       #   run: |
       #     deno run --no-remote test.ts
