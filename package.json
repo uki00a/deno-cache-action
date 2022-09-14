@@ -1,0 +1,15 @@
+{
+  "name": "deno-cache-action",
+  "version": "0.0.1",
+  "main": "index.js",
+  "repository": "https://github.com/uki00a/deno-cache-action.git",
+  "author": "uki00a <uki00a@gmail.com>",
+  "license": "MIT",
+  "packageManager": "yarn@1.22.19",
+  "private": true,
+  "dependencies": {
+    "@actions/cache": "^3.0.4",
+    "@actions/core": "^1.9.1",
+    "@actions/exec": "^1.1.1"
+  }
+}
