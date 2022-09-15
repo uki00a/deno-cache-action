@@ -12,3 +12,5 @@ inputs:
   key:
     default: |
       deno-cache-action
+  import-map:
+    description: 'The path to an import map file'
