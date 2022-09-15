@@ -44448,7 +44448,7 @@ module.exports =
 {
   parallel      : __nccwpck_require__(8210),
   serial        : __nccwpck_require__(445),
-  serialOrdered : __nccwpck_require__(967)
+  serialOrdered : __nccwpck_require__(3578)
 };
 
 
@@ -44779,7 +44779,7 @@ function parallel(list, iterator, callback)
 /***/ 445:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
-var serialOrdered = __nccwpck_require__(967);
+var serialOrdered = __nccwpck_require__(3578);
 
 // Public API
 module.exports = serial;
@@ -44800,7 +44800,7 @@ function serial(list, iterator, callback)
 
 /***/ }),
 
-/***/ 967:
+/***/ 3578:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 var iterate    = __nccwpck_require__(9023)
@@ -61676,6 +61676,8 @@ var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
 
+;// CONCATENATED MODULE: external "node:fs/promises"
+const promises_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("node:fs/promises");
 // EXTERNAL MODULE: ./node_modules/@actions/cache/lib/cache.js
 var cache = __nccwpck_require__(7799);
 // EXTERNAL MODULE: ./node_modules/@actions/core/lib/core.js
@@ -64794,12 +64796,17 @@ var mod = /*#__PURE__*/Object.freeze({
 
 
 
-const denoInfo = mod.object({
+
+const denoInfoSchema = mod.object({
   denoDir: mod.string(),
   modulesCache: mod.string(),
   typescriptCache: mod.string(),
   registryCache: mod.string(),
   originStorage: mod.string(),
+});
+
+const importMapSchema = mod.object({
+  imports: mod.record(mod.string()).optional(),
 });
 
 async function main() {
@@ -64808,8 +64815,9 @@ async function main() {
     silent: true,
     failOnStdErr: true,
   });
-  const info = denoInfo.parse(JSON.parse(stdout.trim()));
+  const info = denoInfoSchema.parse(JSON.parse(stdout.trim()));
   const entrypoints = (0,core.getMultilineInput)("path", { trimWhitespace: true });
+  const maybeImportMap = (0,core.getInput)("import-map", { trimWhitespace: true });
   const key = (0,core.getInput)("key", { trimWhitespace: true, required: true });
   const toCache = [
     [info.modulesCache, `${key}-modules-cache`],
@@ -64819,14 +64827,49 @@ async function main() {
   }
 
   for (const entrypoint of entrypoints) {
-    await (0,exec.exec)(denoExecutable, ["cache", "--quiet", entrypoint], {
-      failOnStdErr: true,
+    await denoCache({
+      executable: denoExecutable,
+      entrypoint,
+      importMap: maybeImportMap,
     });
+  }
+
+  if (maybeImportMap) {
+    const importMap = importMapSchema.parse(
+      JSON.parse(
+        (await (0,promises_namespaceObject.readFile)(maybeImportMap, { encoding: "utf-8" })).trim(),
+      ),
+    );
+    const imports = importMap.imports ?? {};
+    for (const specifier of Object.keys(imports)) {
+      const isPartialSpecifier = specifier.endsWith("/");
+      if (isPartialSpecifier) continue;
+      await denoCache({
+        executable: denoExecutable,
+        entrypoint: imports[specifier],
+      });
+    }
   }
 
   for (const [path, key] of toCache) {
     await (0,cache.saveCache)([path], key);
   }
+}
+
+/**
+ * @param {{ executable: string, importMap?: string, entrypoint: string }} options
+ */
+async function denoCache(options) {
+  const { executable: denoExecutable, importMap: maybeImportMap, entrypoint } =
+    options;
+  const args = ["cache", "--quiet"];
+  if (maybeImportMap) {
+    args.push("--import-map", maybeImportMap);
+  }
+  args.push(entrypoint);
+  await (0,exec.exec)(denoExecutable, args, {
+    failOnStdErr: true,
+  });
 }
 
 main().catch((error) => {

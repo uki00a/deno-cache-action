@@ -29,7 +29,9 @@ jobs:
         with:
           path: |
             test.ts
-          key: ${{ runner.os }}-${{ hashFiles('**/test.ts') }}
+          key: ${{ runner.os }}-${{ hashFiles('**/test.ts', '**/import_map.json') }}
+          import-map: import_map.json
       - name: Run tests
         run: |
-          deno run --cached-only test.ts
+          deno run --cached-only --import-map=import_map.json test.ts
+          deno run --cached-only https://deno.land/std@0.156.0/examples/welcome.ts
