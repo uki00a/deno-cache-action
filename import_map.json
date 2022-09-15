@@ -1,5 +1,6 @@
 {
   "imports": {
-    "std/fmt/colors": "https://deno.land/std@0.155.0/fmt/colors.ts"
+    "std/fmt/colors": "https://deno.land/std@0.155.0/fmt/colors.ts",
+    "std/examples/welcome": "https://deno.land/std@0.156.0/examples/welcome.ts"
   }
 }
